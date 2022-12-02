@@ -3,6 +3,30 @@ from django.db import models
 # Create your models here.
 
 
+class DriverLicense(models.Model):
+    serial_id = models.CharField(max_length=20)
+    release_date = models.DateField(default=None)
+    expiration_date = models.DateField(default=None)
+
+
+class Driver(models.Model):
+
+    STATUS_CHOICES=(
+        ('W', 'Work'),
+        ('NW', 'Not Work'),
+    )
+
+    firstName = models.CharField(max_length=100)
+    lastName = models.CharField(max_length=100)
+    nationalId = models.CharField(max_length=13)
+    address = models.CharField(max_length=1000)
+    birth_date = models.DateField(default=None)
+    email = models.CharField(max_length=300)
+    phoneNumber = models.CharField(max_length=10)
+    driverLicense = models.ForeignKey(DriverLicense, default=None)  # on_delete=models.CASCADE)
+    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NW')
+
+
 class Vehicle(models.Model):
     VEHICLE_STATUS_CHOICES = (
         ('W', 'Work'),
@@ -32,29 +56,20 @@ class Vehicle(models.Model):
     inspection_status = models.CharField(max_length=2, default='NU', choices=INSPECTION_STATUS_CHOICES)
 
 
-class Driver(models.Model):
+class Address(models.Model):
+    address = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=100)
 
-    STATUS_CHOICES=(
-        ('W', 'Work'),
-        ('NW', 'Not Work'),
-    )
-
-    firstName = models.CharField(max_length=100)
-    lastName = models.CharField(max_length=100)
-    nationalId = models.CharField(max_length=13)
-    address = models.CharField(max_length=1000)
-    email = models.CharField(max_length=300)
-    phoneNumber = models.CharField(max_length=10)
-    driverLicense = models.ForeignKey(DriverLicense, default=None)  # on_delete=models.CASCADE)
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NW')
 
 class Path(models.Model):
-    pass
+    driver = models.ForeignKey(Driver, default=None, on_delete=models.CASCADE)
+    vehicle = models.ForeignKey(Vehicle, default=None, on_delete=models.CASCADE)
+    start = models.ForeignKey(Address, default=None, on_delete=models.CASCADE)
+    end = models.ForeignKey(Address, default=None, on_delete=models.CASCADE)
 
-class Address(models.Model):
-    pass
 
-class DriverLicense(models.Model):
-    pass
+
+
 
 
