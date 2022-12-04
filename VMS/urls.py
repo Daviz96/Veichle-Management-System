@@ -16,6 +16,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import vms_app.views as v
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', v.Home.as_view(), name='home'),
+
+    path('driver/list/', v.DriversView.as_view(), name='driver-list'),
+    path('driver/<int:id>/', v.DriverDetailsView.as_view(), name='driver-details'),
+    path('driver/edit/<int:id>/', v.DriverEditView.as_view(), name='driver-edit'),
+    path('driver/add/', v.DriverAddView.as_view(), name='driver-add'),
+
+    path('vehicle/list/', v.VehiclesView.as_view(), name='vehicle-list'),
+    path('vehicle/<int:id>/', v.VehicleDetailsView.as_view(), name='vehicle-details'),
+    path('vehicle/edit/<int:id>/', v.VehicleEditView.as_view(), name='vehicle-edit'),
+    path('vehicle/add/', v.VehicleAddView.as_view(), name='vehicle-add'),
+
+    path('path/list/', v.PathsView.as_view(), name='path-list'),
+    path('path/<int:id>/', v.PathDetailsView.as_view(), name='path-details'),
+    path('path/add/', v.PathAddView.as_view(), name='path-add'),
+
+    #  path('', v.Home.as_view(), name='home'),
+  #  path('', v.Home.as_view(), name='home'),
+  #  path('', v.Home.as_view(), name='home'),
+
 ]

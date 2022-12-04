@@ -4,6 +4,7 @@ from django.db import models
 
 
 class DriverLicense(models.Model):
+    driver = models.OneToOneField("Driver", default=None, on_delete=models.PROTECT)
     serial_id = models.CharField(max_length=20)
     release_date = models.DateField(default=None)
     expiration_date = models.DateField(default=None)
@@ -11,7 +12,7 @@ class DriverLicense(models.Model):
 
 class Driver(models.Model):
 
-    STATUS_CHOICES=(
+    STATUS_CHOICES = (
         ('W', 'Work'),
         ('NW', 'Not Work'),
     )
@@ -23,7 +24,6 @@ class Driver(models.Model):
     birth_date = models.DateField(default=None)
     email = models.CharField(max_length=300)
     phoneNumber = models.CharField(max_length=10)
-    driverLicense = models.ForeignKey(DriverLicense, default=None)  # on_delete=models.CASCADE)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NW')
 
 
@@ -65,8 +65,8 @@ class Address(models.Model):
 class Path(models.Model):
     driver = models.ForeignKey(Driver, default=None, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle, default=None, on_delete=models.CASCADE)
-    start = models.ForeignKey(Address, default=None, on_delete=models.CASCADE)
-    end = models.ForeignKey(Address, default=None, on_delete=models.CASCADE)
+    start = models.ForeignKey(Address, default=None, related_name='start', on_delete=models.CASCADE)
+    end = models.ForeignKey(Address, default=None, related_name='end', on_delete=models.CASCADE)
 
 
 
