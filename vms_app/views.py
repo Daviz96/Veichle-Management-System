@@ -48,3 +48,18 @@ class VehicleEditView(View):
 class VehicleAddView(View):
     def get(self, request):
         return render(request, "vms-vehicle-add.html")
+
+
+class PathsView(View):
+    def get(self, request):
+        return render(request, "vms-paths-list.html")
+
+
+class PathDetailsView(View):
+    def get(self, request):
+        return render(request, "vms-path-details.html")
+
+
+class PathAddView(View):
+    def get(self, request):
+        return render(request, "vms-path-add.html")
