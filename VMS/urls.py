@@ -17,15 +17,21 @@ from django.contrib import admin
 from django.urls import path
 
 import vms_app.views as v
+import accounts.views as a
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('login/', a.LoginView.as_view(), name='login'),
+    path('register/', a.RegisterView.as_view(), name='register'),
+
     path('', v.Home.as_view(), name='home'),
 
     path('driver/list/', v.DriversView.as_view(), name='driver-list'),
     path('driver/<int:id>/', v.DriverDetailsView.as_view(), name='driver-details'),
     path('driver/edit/<int:id>/', v.DriverEditView.as_view(), name='driver-edit'),
     path('driver/add/', v.DriverAddView.as_view(), name='driver-add'),
+    path('driver/delete/<int:id>/', v.DriverDeleteView.as_view(), name='driver-delete'),
 
     path('vehicle/list/', v.VehiclesView.as_view(), name='vehicle-list'),
     path('vehicle/<int:id>/', v.VehicleDetailsView.as_view(), name='vehicle-details'),
@@ -36,8 +42,5 @@ urlpatterns = [
     path('path/<int:id>/', v.PathDetailsView.as_view(), name='path-details'),
     path('path/add/', v.PathAddView.as_view(), name='path-add'),
 
-    #  path('', v.Home.as_view(), name='home'),
-  #  path('', v.Home.as_view(), name='home'),
-  #  path('', v.Home.as_view(), name='home'),
 
 ]

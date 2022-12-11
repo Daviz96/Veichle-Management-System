@@ -4,7 +4,7 @@ from django.db import models
 
 
 class DriverLicense(models.Model):
-    driver = models.OneToOneField("Driver", default=None, on_delete=models.PROTECT)
+    driver = models.OneToOneField("Driver", default=None, on_delete=models.CASCADE)
     serial_id = models.CharField(max_length=20)
     release_date = models.DateField(default=None)
     expiration_date = models.DateField(default=None)
@@ -25,6 +25,9 @@ class Driver(models.Model):
     email = models.CharField(max_length=300)
     phoneNumber = models.CharField(max_length=10)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NW')
+
+    def __str__(self):
+        return self.get_status_display()
 
 
 class Vehicle(models.Model):

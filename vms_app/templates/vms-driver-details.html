@@ -2,6 +2,27 @@
 {% block title %}{% endblock %}
 {% block content %}
 
+    <h2>Driver Details</h2>
 
+    <ul>
+        <li>ID {{ driver.pk }}</li>
+        <li>First Name: {{ driver.firstName }}</li>
+        <li>Last Name: {{ driver.lastName }}</li>
+        <li>National Id: {{ driver.nationalId }}</li>
+        <li>Address: {{ driver.address }}</li>
+        <li>Birth date: {{ driver.birth_date }}</li>
+        <li>e-mail: {{ driver.email }}</li>
+        <li>Phone Number: {{ driver.phoneNumber }}</li>
+        <li>Status: {{ driver.status }}</li>
+    </ul>
+    <br>
+
+    <h2>Driver License Details</h2>
+
+    <ul>
+        <li>Serial Id: {{ license.serial_id }}</li>
+        <li>Release date: {{ license.release_date }}</li>
+        <li>Expiration date: {{ license.expiration_date }}</li>
+    </ul>
 
 {% endblock content %}
