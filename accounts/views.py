@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import View
@@ -19,7 +19,7 @@ class LoginView(View):
                 login(request, user)
                 return redirect("home")
             else:
-                return HttpResponse("login not valid")
+                return render(request, 'login.html', {'form': form, 'error': 'Wrong username or password'})
 
     def get(self, request):
         form = LoginForm()
@@ -52,3 +52,12 @@ class RegisterView(View):
 
     def get(self, request):
         return render(request, 'register.html')
+
+
+class LogoutView(View):
+    def get(self, request):
+        # Log out the user
+        logout(request)
+
+        # Redirect the user to the login page
+        return redirect('login')

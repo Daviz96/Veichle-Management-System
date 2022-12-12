@@ -1,17 +1,23 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 from django.http import HttpResponse
+from .models import Driver, DriverLicense
 
 # Create your views here.
 
 
 class Home(View):
     def get(self, request):
-        return render(request, "vms-home.html")
+        user = request.user.is_authenticated
+        context = {
+            user: "user"
+        }
+        return render(request, "vms-home.html", context)
 
-
-from django.views import View
-from .models import Driver, DriverLicense
 
 class DriversView(View):
     def get(self, request):

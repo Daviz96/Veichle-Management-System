@@ -4,13 +4,14 @@
   </head>
   <body>
     <h1>Login</h1>
-    <a href="{% url 'register' %}">Sign Up</a>
-    
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
       <button type="submit">Login</button>
     </form>
-
+  <a href="{% url "register" %}">Sign Up</a>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
   </body>
 </html>
