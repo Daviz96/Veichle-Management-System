@@ -26,8 +26,6 @@ class Driver(models.Model):
     phoneNumber = models.CharField(max_length=10)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NW')
 
-    def __str__(self):
-        return self.get_status_display()
 
 
 class Vehicle(models.Model):
@@ -50,7 +48,8 @@ class Vehicle(models.Model):
         ('D', 'Diesel'),
     )
 
-    driver = models.ForeignKey(Driver, default=None, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, default=None, on_delete=models.PROTECT, null=True)
+    model = models.CharField(max_length=200, default='')
     registration_plate = models.CharField(max_length=200, default='')
     vehicle_status = models.CharField(max_length=2, default='NW', choices=VEHICLE_STATUS_CHOICES)
     fuel_type = models.CharField(max_length=1, default='P', choices=FUEL_TYPE_CHOICES)

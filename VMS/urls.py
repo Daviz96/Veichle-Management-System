@@ -43,6 +43,7 @@ urlpatterns = [
     path('vehicle/<int:id>/', v.VehicleDetailsView.as_view(), name='vehicle-details'),
     path('vehicle/edit/<int:id>/', v.VehicleEditView.as_view(), name='vehicle-edit'),
     path('vehicle/add/', v.VehicleAddView.as_view(), name='vehicle-add'),
+    path('vehicle/delete/<int:id>/', v.VehicleDeleteView.as_view(), name='vehicle-delete'),
 
     path('path/list/', v.PathsView.as_view(), name='path-list'),
     path('path/<int:id>/', v.PathDetailsView.as_view(), name='path-details'),

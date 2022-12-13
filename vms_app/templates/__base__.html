@@ -54,12 +54,21 @@
                                 <i class="fas fa-angle-right"></i>
                             </a>
                         </li>
+                    {% if user_auth %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url "logout" %}">
                                 <span>Log Out</span>
                                 <i class="fas fa-angle-right"></i>
                             </a>
                         </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "login" %}">
+                                <span>Login</span>
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
                     </ul>
 
             <div class="m-4 p-3 width-medium text-color-darker">

@@ -15,13 +15,38 @@
                     </div>
                 </div>
 
-    <ul>
-    <li>lorem ipsum dolor sit amet</li>
-    <li>lorem ipsum dolor sit amet</li>
-    <li>lorem ipsum dolor sit amet</li>
-    <li>lorem ipsum dolor sit amet</li>
-    <li>lorem ipsum dolor sit amet</li>
-    <li>lorem ipsum dolor sit amet</li>
-    </ul>
+        <table>
+  <thead>
+    <tr>
+        <th>ID</th>
+      <th>Model</th>
+      <th>Registration plate</th>
+      <th>Fuel type</th>
+      <th>Insurance status</th>
+      <th>Inspection status</th>
+      <th>Vehicle status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for vehicle in vehicles %}
+      <tr>
+        <td>{{ vehicle.pk }}</td>
+        <td>{{ vehicle.model }}</td>
+        <td>{{ vehicle.registration_plate }}</td>
+        <td>{{ vehicle.get_fuel_type_display }}</td>
+        <td>{{ vehicle.get_insurance_status_display }}</td>
+        <td>{{ vehicle.get_inspection_status_display }}</td>
+        <td>{{ vehicle.get_vehicle_status_display }}</td>
+        <td>
+          <a href="{% url 'vehicle-edit' vehicle.pk %}">Edit</a>
+          <a href="{% url 'vehicle-delete' vehicle.pk %}">Delete</a>
+          <a href="{% url 'vehicle-details' vehicle.pk %}">Details</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 
 {% endblock content %}

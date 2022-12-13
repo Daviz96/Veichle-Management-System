@@ -5,7 +5,7 @@
     <h2>Driver Details</h2>
 
     <ul>
-        <li>ID {{ driver.pk }}</li>
+        <li>ID {{ driver.id }}</li>
         <li>First Name: {{ driver.firstName }}</li>
         <li>Last Name: {{ driver.lastName }}</li>
         <li>National Id: {{ driver.nationalId }}</li>
@@ -13,7 +13,7 @@
         <li>Birth date: {{ driver.birth_date }}</li>
         <li>e-mail: {{ driver.email }}</li>
         <li>Phone Number: {{ driver.phoneNumber }}</li>
-        <li>Status: {{ driver.status }}</li>
+        <li>Status: {{ driver.get_status_display }}</li>
     </ul>
     <br>
 
