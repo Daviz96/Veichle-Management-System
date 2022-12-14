@@ -2,6 +2,13 @@
 {% block title %}{% endblock %}
 {% block content %}
 
-
+    <h1>Add Driver</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form_driver.as_p }}
+      <h3>Driver License</h3>
+      {{ form_license.as_p }}
+      <button type="submit">Save</button>
+    </form>
 
 {% endblock content %}

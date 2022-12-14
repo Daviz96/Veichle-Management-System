@@ -21,7 +21,7 @@
                 AGANA <span>VMS</span>
             </a>
          <div class="d-flex justify-content-around">
-             <h4 style="color: #1e7e34" >{{ user.username }}</h4>
+             <h4 style="color: #1e7e34" >{{ user }}</h4>
              <div class="circle-div text-center"><i class="fas fa-user icon-user"></i></div>
          </div>
         </nav>
@@ -54,7 +54,7 @@
                                 <i class="fas fa-angle-right"></i>
                             </a>
                         </li>
-                    {% if user_auth %}
+                    {% if user %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url "logout" %}">
                                 <span>Log Out</span>

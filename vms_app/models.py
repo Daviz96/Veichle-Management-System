@@ -19,11 +19,11 @@ class Driver(models.Model):
 
     firstName = models.CharField(max_length=100)
     lastName = models.CharField(max_length=100)
-    nationalId = models.CharField(max_length=13)
+    nationalId = models.CharField(max_length=100)
     address = models.CharField(max_length=1000)
     birth_date = models.DateField(default=None)
     email = models.CharField(max_length=300)
-    phoneNumber = models.CharField(max_length=10)
+    phoneNumber = models.CharField(max_length=100)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NW')
 
 
