@@ -10,7 +10,18 @@
         <h3>end address</h3>
       {{ form_end }}
         <h3>driver and car</h3>
-      {{ form_path.as_p }}
+       <label for="cars">Choose a car:</label>
+<select id="cars" name="cars">
+    {% for vehicle in vehicles %}
+    <option value="{{ vehicle }}">{{ vehicle.registration_plate }}</option>
+    {% endfor %}
+</select>
+           <label for="cars">Choose a driver:</label>
+<select id="drivers" name="drivers">
+    {% for driver in drivers %}
+    <option value="{{ driver }}">{{ driver.lastName }}</option>
+    {% endfor %}
+</select>
       <button type="submit">Save</button>
     </form>
 

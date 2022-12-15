@@ -184,11 +184,13 @@ class PathAddView(View):
     def get(self, request):
         form_start = AddressForm()
         form_end = AddressForm()
-        form_path = PathForm()
+        vehicles = Vehicle.objects.filter(vehicle_status="NW")
+        drivers = Driver.objects.filter(status="NW")
         context = {
             "user": user(request),
             "form_start": form_start,
             "form_end": form_end,
-            "form_path": form_path,
+            "drivers": drivers,
+            "vehicles": vehicles,
         }
         return render(request, "vms-path-add.html", context)
