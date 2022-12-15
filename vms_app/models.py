@@ -59,9 +59,10 @@ class Vehicle(models.Model):
 
 
 class Address(models.Model):
-    address = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, null=True)
+    city = models.CharField(max_length=100, null=True)
+    address = models.CharField(max_length=100, null=True)
+    postal_code = models.CharField(max_length=100, null=True)
 
 
 class Path(models.Model):

@@ -2,6 +2,16 @@
 {% block title %}{% endblock %}
 {% block content %}
 
-
+    <h1>Plan Path</h1>
+    <form method="post">
+      {% csrf_token %}
+        <h3>start address</h3>
+      {{ form_start }}
+        <h3>end address</h3>
+      {{ form_end }}
+        <h3>driver and car</h3>
+      {{ form_path.as_p }}
+      <button type="submit">Save</button>
+    </form>
 
 {% endblock content %}

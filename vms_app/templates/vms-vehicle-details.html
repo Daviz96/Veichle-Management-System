@@ -2,6 +2,16 @@
 {% block title %}{% endblock %}
 {% block content %}
 
+    <h2>Vehicle Details</h2>
 
+    <ul>
+        <li>ID {{ vehicle.id }}</li>
+        <li>Model: {{ vehicle.model }}</li>
+        <li>Registration Plate: {{ vehicle.registration_plate }}</li>
+        <li>Fuel Type: {{ vehicle.get_fuel_type_display }}</li>
+        <li>Insurance Status: {{ vehicle.get_insurance_status_display }}</li>
+        <li>Inspection Status: {{ vehicle.get_inspection_status_display }}</li>
+        <li>Vehicle Status: {{ vehicle.get_vehicle_status_display }}</li>
+    </ul>
 
 {% endblock content %}

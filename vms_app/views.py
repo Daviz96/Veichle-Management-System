@@ -4,11 +4,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 from django.http import HttpResponse
 from .models import Driver, DriverLicense, Vehicle, Address, Path
 
-from .forms import DriverAddForm, DriverLicenseAddForm
+from .forms import DriverAddForm, DriverLicenseAddForm, VehicleAddForm, AddressForm, PathForm
 
 # Create your views here.
 
@@ -17,16 +18,6 @@ def user(request):
     if request.user.is_authenticated:
         user = request.user
         return user
-    return None
-
-
-class BaseView(View):
-    def get(self, request):
-        # context = {
-        #     "user": user(request)
-        # }
-        return render(request)
-
 
 class Home(View):
     def get(self, request):
@@ -99,12 +90,10 @@ class DriverAddView(View):
                                            address=address, birth_date=birth_date, email=email, phoneNumber=phoneNumber,
                                            status=status)
 
-            license = DriverLicense.objects.create(driver=driver, serial_id=serial_id, release_date=release_date, expiration_date=expiration_date)
-            print(driver.pk)
-            # id = Driver.objects.get(driver.id).id
+            license = DriverLicense.objects.create(driver=driver, serial_id=serial_id, release_date=release_date,
+                                                   expiration_date=expiration_date)
 
-            # return redirect(DriverDetailsView(), id=id)
-            return HttpResponse("form is valid")
+            return redirect(reverse('driver-details', kwargs={'id': driver.pk}))
         else:
             return HttpResponse("form is not valid")
 
@@ -122,7 +111,12 @@ class VehiclesView(View):
 
 class VehicleDetailsView(View):
     def get(self, request, id):
-        return render(request, "vms-vehicle-details.html", {"user": user(request)})
+        vehicle = Vehicle.objects.get(pk=id)
+        context = {
+            'vehicle': vehicle,
+            "user": user(request)
+        }
+        return render(request, "vms-vehicle-details.html", context)
 
 
 class VehicleEditView(View):
@@ -134,7 +128,32 @@ class VehicleEditView(View):
 class VehicleAddView(View):
     @method_decorator(login_required)
     def get(self, request):
-        return render(request, "vms-vehicle-add.html", {"user": user(request)})
+        form = VehicleAddForm()
+        context = {
+            "user": user(request),
+            "form": form
+        }
+        return render(request, "vms-vehicle-add.html", context)
+
+
+    def post(self, request):
+        form = VehicleAddForm(request.POST)
+        if form.is_valid():
+
+            model = form.cleaned_data['model']
+            registration_plate = form.cleaned_data['registration_plate']
+            vehicle_status = form.cleaned_data['vehicle_status']
+            fuel_type = form.cleaned_data['fuel_type']
+            insurance_status = form.cleaned_data['insurance_status']
+            inspection_status = form.cleaned_data['inspection_status']
+
+            vehicle = Vehicle.objects.create(model=model, registration_plate=registration_plate,
+                                            vehicle_status=vehicle_status,fuel_type=fuel_type,
+                                            insurance_status=insurance_status, inspection_status=inspection_status)
+
+            return redirect(reverse('vehicle-details', kwargs={'id': vehicle.pk}))
+        else:
+            return HttpResponse("form is not valid")
 
 
 class VehicleDeleteView(View):
@@ -163,4 +182,13 @@ class PathDetailsView(View):
 class PathAddView(View):
     @method_decorator(login_required)
     def get(self, request):
-        return render(request, "vms-path-add.html", {"user": user(request)})
+        form_start = AddressForm()
+        form_end = AddressForm()
+        form_path = PathForm()
+        context = {
+            "user": user(request),
+            "form_start": form_start,
+            "form_end": form_end,
+            "form_path": form_path,
+        }
+        return render(request, "vms-path-add.html", context)

@@ -1,4 +1,5 @@
 from django import forms
+from .models import Driver, Vehicle
 import datetime
 
 
@@ -43,8 +44,54 @@ class DriverLicenseAddForm(forms.Form):
     release_date = forms.DateField(label='Release Date', widget=forms.SelectDateWidget(years=(year for year in range(2022, 1900, -1))))
     expiration_date = forms.DateField(label='Expiration Date', widget=forms.SelectDateWidget(years=(year for year in range(2022, 1900, -1))))
 
-
-# class VehicleAddForm(forms.Form):
-#     class DriverAddForm(forms.Form):
-
 # years=(year for year in range(datetime.date.today().year, 1900, -1)
+
+class VehicleAddForm(forms.Form):
+    VEHICLE_STATUS_CHOICES = (
+        ('', 'Choose...'),
+        ('W', 'Work'),
+        ('NW', 'Not Work'),
+    )
+    INSURANCE_STATUS_CHOICES = (
+        ('', 'Choose...'),
+        ('U', 'Updated'),
+        ('NU', 'Not Updated'),
+    )
+
+    INSPECTION_STATUS_CHOICES = (
+        ('', 'Choose...'),
+        ('U', 'Updated'),
+        ('NU', 'Not Updated'),
+    )
+
+    FUEL_TYPE_CHOICES = (
+        ('', 'Choose...'),
+        ('P', 'Petrol'),
+        ('D', 'Diesel'),
+    )
+
+    model = forms.CharField(label="Model")
+    registration_plate = forms.CharField(label="Registration Plate")
+    vehicle_status = forms.ChoiceField(label="Vehicle Status", choices=VEHICLE_STATUS_CHOICES)
+    fuel_type = forms.ChoiceField(label="Fuel Type", choices=FUEL_TYPE_CHOICES)
+    insurance_status = forms.ChoiceField(label="Insurance Status", choices=INSURANCE_STATUS_CHOICES)
+    inspection_status = forms.ChoiceField(label="Inspection Status", choices=INSPECTION_STATUS_CHOICES)
+
+
+class AddressForm(forms.Form):
+    state = forms.CharField(label="State")
+    city = forms.CharField(label="City")
+    address = forms.CharField(label="Address")
+    postal_code = forms.CharField(label="Postal Code")
+
+
+class PathForm(forms.Form):
+    drivers = list(Driver.objects.filter(status="NW"))
+    vehicles = list(Vehicle.objects.filter(vehicle_status="NW"))
+    DRIVER_CHOICES = [tuple([driver.pk, driver.lastName])for driver in drivers]
+    VEHICLE_CHOICES = [tuple([vehicle.pk, vehicle.registration_plate])for vehicle in vehicles]
+
+
+    driver = forms.ChoiceField(label="Driver", choices=DRIVER_CHOICES)
+    vehicle = forms.ChoiceField(label="Vehicle", choices=VEHICLE_CHOICES)
+
