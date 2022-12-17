@@ -4,28 +4,44 @@
     <form method="post">
       {% csrf_token %}
     <h1>Plan Path</h1>
-
         <h3>start address</h3>
-      {{ form_start }}
+  <label for="id_state_start">State:</label><br>
+  <input type="text" name="state_start" id="id_state_start"><br>
+  <label for="id_city_start">City:</label><br>
+  <input type="text" name="city_start" id="id_city_start"><br>
+  <label for="id_address_start">Address:</label><br>
+  <input type="text" name="address_start" id="id_address_start"><br>
+  <label for="id_postal_code_start">Postal Code:</label><br>
+  <input type="text" name="postal_code_start" id="id_postal_code_start"><br><br>
+
+
         <h3>end address</h3>
-      {{ form_end }}
+  <label for="id_state_end">State:</label><br>
+  <input type="text" name="state_end" id="id_state_end"><br>
+  <label for="id_city_end">City:</label><br>
+  <input type="text" name="city_end" id="id_city_end"><br>
+  <label for="id_address_end">Address:</label><br>
+  <input type="text" name="address_end" id="id_address_end"><br>
+  <label for="id_postal_code_end">Postal Code:</label><br>
+  <input type="text" name="postal_code_end" id="id_postal_code_end"><br><br>
+
         <h3>driver and car</h3>
        <label for="cars">Choose a car:</label>
-<select id="cars" name="cars">
+        <select id="cars" name="cars">
     {% for vehicle in vehicles %}
-    <option value="{{ vehicle.registration_plate }}">{{ vehicle.registration_plate }}</option>
+        <option value="{{ vehicle.registration_plate }}">{{ vehicle.registration_plate }}</option>
     {% endfor %}
-</select>
+        </select>
            <label for="cars">Choose a driver:</label>
-<select id="drivers" name="drivers">
+        <select id="drivers" name="drivers">
     {% for driver in drivers %}
-    <option value={{ driver.nationalId }}>{{ driver.lastName }}</option>
+         <option value={{ driver.nationalId }}>{{ driver.lastName }}</option>
     {% endfor %}
-</select>
+        </select>
       <label for="date">
           Date
-    <input type="date" name="date" />
-  </label>
+        <input type="date" name="date" />
+        </label>
       <button type="submit">Save</button>
     </form>
 

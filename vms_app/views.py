@@ -18,6 +18,7 @@ def user(request):
     if request.user.is_authenticated:
         user = request.user
         return user
+    return ""
 
 class Home(View):
     def get(self, request):
@@ -207,46 +208,42 @@ class PathAddView(View):
         return render(request, "vms-path-add.html", context)
 
     def post(self, request):
-        form_start = AddressForm(request.POST)
-        form_end = AddressForm(request.POST)
-        if form_start.is_valid() and form_end.is_valid():
 
-            start_state = form_start.cleaned_data['state']
-            start_city = form_start.cleaned_data['city']
-            start_address = form_start.cleaned_data['address']
-            start_postal_code = form_start.cleaned_data['postal_code']
+        start_state = request.POST.get("state_start")
+        start_city = request.POST.get("city_start")
+        start_address = request.POST.get("address_start")
+        start_postal_code = request.POST.get("postal_code_start")
 
-            end_state = form_end.cleaned_data['state']
-            end_city = form_end.cleaned_data['city']
-            end_address = form_end.cleaned_data['address']
-            end_postal_code = form_end.cleaned_data['postal_code']
+        end_state = request.POST.get("state_end")
+        end_city = request.POST.get("city_end")
+        end_address = request.POST.get("address_end")
+        end_postal_code = request.POST.get("postal_code_end")
 
-            driver = request.POST.get("drivers")
-            print(Driver.objects.get(nationalId=driver))
-            vehicle = request.POST.get("cars")
-            print(vehicle)
-            date = request.POST.get("date")
-            print(date)
+        driver = request.POST.get("drivers")
+        print(Driver.objects.get(nationalId=driver))
+        vehicle = request.POST.get("cars")
+        print(vehicle)
+        date = request.POST.get("date")
+        print(date)
 
-            path_address_start = Address.objects.create(state=start_state, city=start_city, address=start_address, postal_code=start_postal_code)
-            path_address_end = Address.objects.create(state=end_state, city=end_city, address=end_address, postal_code=end_postal_code)
+        path_address_start = Address.objects.create(state=start_state, city=start_city, address=start_address, postal_code=start_postal_code)
+        path_address_end = Address.objects.create(state=end_state, city=end_city, address=end_address, postal_code=end_postal_code)
 
-            print(path_address_start)
-            print(path_address_end)
+        print(path_address_start)
+        print(path_address_end)
 
-            driver_obj = Driver.objects.get(nationalId=driver)
-            vehicle_obj = Vehicle.objects.get(registration_plate=vehicle)
+        driver_obj = Driver.objects.get(nationalId=driver)
+        vehicle_obj = Vehicle.objects.get(registration_plate=vehicle)
 
-            driver_obj.status = "W"
-            vehicle_obj.vehicle_status = "W"
-            driver_obj.save()
-            vehicle_obj.save()
+        driver_obj.status = "W"
+        vehicle_obj.vehicle_status = "W"
+        driver_obj.save()
+        vehicle_obj.save()
 
-            path = Path.objects.create(start=path_address_start, end=path_address_end, driver=driver_obj, vehicle=vehicle_obj, date=date)
+        path = Path.objects.create(start=path_address_start, end=path_address_end, driver=driver_obj, vehicle=vehicle_obj, date=date)
 
-            return redirect(reverse('path-details', kwargs={'id': path.pk}))
+        return redirect(reverse('path-details', kwargs={'id': path.pk}))
 
-        return HttpResponse("form is valid")
 
 
 class PathDeleteView(View):

@@ -28,6 +28,7 @@ class LoginView(View):
 
 class RegisterView(View):
     def post(self, request):
+
         username = request.POST['username']
         password = request.POST['password']
         password2 = request.POST['password2']
@@ -39,8 +40,11 @@ class RegisterView(View):
                 return render(request, 'register.html', {'error': 'Username is already taken'})
 
             # Create a new user
-            user = User.objects.create_user(username=username, password=password)
-            user.save()
+            try:
+                user = User.objects.create_user(username=username, password=password)
+                user.save()
+            except ValueError:
+                return render(request, 'register.html', {'error': 'Username must be set'})
 
             # Authenticate the user and login
             user = authenticate(username=username, password=password)
