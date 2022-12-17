@@ -15,4 +15,34 @@
                     </div>
                 </div>
 
+    <table>
+  <thead>
+    <tr>
+        <th>ID</th>
+      <th>Driver</th>
+      <th>Vehicle Plate</th>
+      <th>Address Start</th>
+      <th>Address End</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for path in paths %}
+      <tr>
+        <td>{{ path.pk }}</td>
+        <td>{{ path.driver }}</td>
+        <td>{{ path.vehicle }}</td>
+        <td>{{ path.start }}</td>
+        <td>{{ path.end }}</td>
+        <td>{{ path.date }}</td>
+        <td>
+          <a href="{% url 'path-delete' path.pk %}">Delete</a>
+          <a href="{% url 'path-details' path.pk %}">Details</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock content %}

@@ -2,6 +2,15 @@
 {% block title %}{% endblock %}
 {% block content %}
 
+    <h2>Path Details</h2>
 
+    <ul>
+        <li>ID {{ path.id }}</li>
+        <li>Driver: <a href="{% url "driver-details" path.driver.pk %}">{{ path.driver }}</a></li>
+        <li>Vehicle: <a href="{% url "vehicle-details" path.vehicle.pk %}">{{ path.vehicle }}</a></li>
+        <li>Address Start: {{ path.start }}</li>
+        <li>Address End: {{ path.end }}</li>
+        <li>Date: {{ path.date }}</li>
+    </ul>
 
 {% endblock content %}

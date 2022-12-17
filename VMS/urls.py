@@ -48,6 +48,6 @@ urlpatterns = [
     path('path/list/', v.PathsView.as_view(), name='path-list'),
     path('path/<int:id>/', v.PathDetailsView.as_view(), name='path-details'),
     path('path/add/', v.PathAddView.as_view(), name='path-add'),
-
+    path('path/delete/<int:id>/', v.PathDeleteView.as_view(), name='path-delete'),
 
 ]

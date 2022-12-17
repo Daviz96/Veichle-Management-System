@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.http import HttpResponse
 from .models import Driver, DriverLicense, Vehicle, Address, Path
 
-from .forms import DriverAddForm, DriverLicenseAddForm, VehicleAddForm, AddressForm, PathForm
+from .forms import DriverAddForm, DriverLicenseAddForm, VehicleAddForm, AddressForm
 
 # Create your views here.
 
@@ -86,12 +86,18 @@ class DriverAddView(View):
             release_date = form_license.cleaned_data['release_date']
             expiration_date = form_license.cleaned_data['expiration_date']
 
-            driver = Driver.objects.create(firstName=firstName, lastName=lastName, nationalId=nationalId,
-                                           address=address, birth_date=birth_date, email=email, phoneNumber=phoneNumber,
-                                           status=status)
+            try:
+                driver = Driver.objects.create(firstName=firstName, lastName=lastName, nationalId=nationalId,
+                                                address=address, birth_date=birth_date, email=email, phoneNumber=phoneNumber,
+                                                status=status)
+            except Exception as e:
+                return HttpResponse(f"{e}")
 
-            license = DriverLicense.objects.create(driver=driver, serial_id=serial_id, release_date=release_date,
-                                                   expiration_date=expiration_date)
+            try:
+                license = DriverLicense.objects.create(driver=driver, serial_id=serial_id, release_date=release_date,
+                                                       expiration_date=expiration_date)
+            except Exception as e:
+                return HttpResponse(f"{e}")
 
             return redirect(reverse('driver-details', kwargs={'id': driver.pk}))
         else:
@@ -176,7 +182,12 @@ class PathsView(View):
 
 class PathDetailsView(View):
     def get(self, request, id):
-        return render(request, "vms-path-details.html", {"user": user(request)})
+        path = Path.objects.get(pk=id)
+        context = {
+            "path": path,
+            "user": user(request)
+        }
+        return render(request, "vms-path-details.html", context)
 
 
 class PathAddView(View):
@@ -194,3 +205,63 @@ class PathAddView(View):
             "vehicles": vehicles,
         }
         return render(request, "vms-path-add.html", context)
+
+    def post(self, request):
+        form_start = AddressForm(request.POST)
+        form_end = AddressForm(request.POST)
+        if form_start.is_valid() and form_end.is_valid():
+
+            start_state = form_start.cleaned_data['state']
+            start_city = form_start.cleaned_data['city']
+            start_address = form_start.cleaned_data['address']
+            start_postal_code = form_start.cleaned_data['postal_code']
+
+            end_state = form_end.cleaned_data['state']
+            end_city = form_end.cleaned_data['city']
+            end_address = form_end.cleaned_data['address']
+            end_postal_code = form_end.cleaned_data['postal_code']
+
+            driver = request.POST.get("drivers")
+            print(Driver.objects.get(nationalId=driver))
+            vehicle = request.POST.get("cars")
+            print(vehicle)
+            date = request.POST.get("date")
+            print(date)
+
+            path_address_start = Address.objects.create(state=start_state, city=start_city, address=start_address, postal_code=start_postal_code)
+            path_address_end = Address.objects.create(state=end_state, city=end_city, address=end_address, postal_code=end_postal_code)
+
+            print(path_address_start)
+            print(path_address_end)
+
+            driver_obj = Driver.objects.get(nationalId=driver)
+            vehicle_obj = Vehicle.objects.get(registration_plate=vehicle)
+
+            driver_obj.status = "W"
+            vehicle_obj.vehicle_status = "W"
+            driver_obj.save()
+            vehicle_obj.save()
+
+            path = Path.objects.create(start=path_address_start, end=path_address_end, driver=driver_obj, vehicle=vehicle_obj, date=date)
+
+            return redirect(reverse('path-details', kwargs={'id': path.pk}))
+
+        return HttpResponse("form is valid")
+
+
+class PathDeleteView(View):
+    @method_decorator(login_required)
+    def get(self, request, id):
+        path = Path.objects.get(pk=id)
+        driver = path.driver
+        vehicle = path.vehicle
+
+        driver.status = "NW"
+        driver.save()
+        vehicle.vehicle_status = "NW"
+        vehicle.save()
+
+        path.delete()
+
+        return redirect("path-list")
+
